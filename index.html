@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
     <!-- NavBar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-dark mb-4">
         <div class="container-fluid">
@@ -33,7 +33,7 @@
     </nav>
 
     <!-- Container of the Whole Chart -->
-    <div class="container shadow bg-white rounded" style="height:420px;">
+    <div class="container border bg-white rounded" style="height:420px; margin-top: 50px;">
         <!-- Dropdown Menu -->
         <div class="d-flex justify-content-between align-items-start mb-1 flex-row-reverse">
             <div class="dropdown p-5 mb-5">
@@ -53,16 +53,16 @@
             <!-- Container of Price Stats -->
             <div class="container">
                 <div class="row row-cols-auto justify-content-center justify-content-md-start" style="margin-top: 50px; margin-left: 10px;">
-                    <div id="closeP" class="col-12 col-md-auto mb-3 mb-md-0" style="font-size: 14px;">Stock Close Price<br>
-                        <span class="stock-price" style="color: #0000FF; font-size: 20px; font-weight: bold;">--</span>
+                    <div id="closeP" class="col-12 col-md-auto mb-3 mb-md-0 text-center" style="font-size: 14px;">Stock Close Price<br>
+                        <span class="stock-price justify-content-center" style="color: #0000FF; font-size: 20px; font-weight: bold;">--</span>
                     </div>
-                    <div id="minP" class="col-12 col-md-auto" style="font-size: 14px;">MAX PER Band<br>
+                    <div id="minP" class="col-12 col-md-auto text-center" style="font-size: 14px;">MAX PER Band<br>
                         <span class="stock-price" style="color: #FF0000; font-size: 20px; font-weight: bold;">--</span>
                     </div>
-                    <div id="aveP" class="col-12 col-md-auto" style="font-size: 14px;">AVE PER Band<br>
+                    <div id="aveP" class="col-12 col-md-auto text-center" style="font-size: 14px;">AVE PER Band<br>
                         <span class="stock-price" style="color: #FF9D00;  font-size:20px; font-weight: bold;">--</span>
                     </div>
-                    <div id="maxP" class="col-12 col-md-auto" style="font-size: 14px;">MIN PER Band<br>
+                    <div id="maxP" class="col-12 col-md-auto text-center" style="font-size: 14px;">MIN PER Band<br>
                         <span class="stock-price" style="color: #008000; font-size: 20px; font-weight: bold;">--</span>
                     </div>
                 </div>

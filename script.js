@@ -85,20 +85,26 @@ $(document).ready(function () {
                             callback: function(value, index, values) {
                                 // Get the date string from the labels array using the index
                                 var dateString = labels[index];
-
-                                // Split the date string into day, month, and year components
-                                var dateParts = dateString.split('/');
-                                
-                                var day = parseInt(dateParts[0], 10);
-                                var month = parseInt(dateParts[1], 10);
-                                var year = parseInt(dateParts[2], 10);
-                                
-                                // Create a new Date object with the correct date components
-                                var date = new Date(year, month - 1, day); 
-                                // Format the date as MMM YYYY
-                                var monthLabel = date.toLocaleString('default', { month: 'short' });
-                                var formattedLabel = monthLabel + ' ' + year;
-                                return formattedLabel;
+                            
+                                // Check if dateString is not empty or undefined
+                                if (dateString) {
+                                    // Split the date string into day, month, and year components
+                                    var dateParts = dateString.split('/');
+                                    
+                                    var day = parseInt(dateParts[0], 10);
+                                    var month = parseInt(dateParts[1], 10);
+                                    var year = parseInt(dateParts[2], 10);
+                                    
+                                    // Create a new Date object with the correct date components
+                                    var date = new Date(year, month - 1, day); 
+                                    // Format the date as MMM YYYY
+                                    var monthLabel = date.toLocaleString('default', { month: 'short' });
+                                    var formattedLabel = monthLabel + ' ' + year;
+                                    return formattedLabel;
+                                } else {
+                                    // Handle the case where dateString is empty or undefined
+                                    return '';
+                                }
                             }
                         }
                     },
@@ -155,7 +161,7 @@ function filterDataByTimeRange(data, timeRange) {
         }
     
         const filteredData = data.filter(row => {
-            const [day, month, year] = row.Date.split('/');
+            const [day, month, year] = row.Date ? row.Date.split('/') : ['', '', ''];
             const rowDate = new Date(year, month - 1, day);
             return rowDate >= pastDate && rowDate <= today;
         });
@@ -202,5 +208,13 @@ async function initChartAndAttachEventListener() {
 }
 
 initChartAndAttachEventListener();
+
+// JavaScript to update the dropdown button text when a menu item is clicked
+document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const selectedRange = this.textContent;
+        document.getElementById('dropdownMenuButton').textContent = selectedRange;
+    });
+});
 
 });
