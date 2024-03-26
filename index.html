@@ -24,54 +24,116 @@
                         <a class="nav-link active text-light" aria-current="page" href="#index.html">Home</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-light" type="submit" style="margin-right: 650px;">Search</button>
-                </form>
             </div>
         </div>
     </nav>
 
-    <!-- Container of the Whole Chart -->
-    <div class="container border bg-white rounded" style="height:420px; margin-top: 50px;">
-        <!-- Dropdown Menu -->
-        <div class="d-flex justify-content-between align-items-start mb-1 flex-row-reverse">
-            <div class="dropdown p-5 mb-5">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Select  Date Range
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#" id="pastMonth">Past 3 Months</a></li>
-                    <li><a class="dropdown-item" href="#" id="past6Months">Past 6 Months</a></li>
-                    <li><a class="dropdown-item" href="#" id="pastYear">Past Year</a></li>
-                    <li><a class="dropdown-item" href="#" id="past3Years">Past 3 Years</a></li>
-                    <li><a class="dropdown-item" href="#" id="past5Years">Past 5 Years</a></li>
-                    <li><a class="dropdown-item" href="#" id="allTime">All Time</a></li>
-                </ul>
+    <!-- Company Name -->
+    <div class="row">
+        <div class="col-8">
+            <div class="col-12 text-align=left" style="font-size: 18px; margin-left: 100px; font-weight: bold; margin-bottom: 10px;">
+                D&L Industries, Inc. (DNL)
             </div>
+        </div>
+        <div class="col-md-3 d-flex justify-content-end align-items-end" style="margin-bottom: 10px; ar">
+            <form class="d-flex" >
+                <input class="form-control me-2" type="search" placeholder="Type a Stock Symbol here" aria-label="Search"> 
+            </form>
+        </div>
+    </div>
+    
 
-            <!-- Container of Price Stats -->
-            <div class="container">
-                <div class="row row-cols-auto justify-content-center justify-content-md-start" style="margin-top: 50px; margin-left: 10px;">
-                    <div id="closeP" class="col-12 col-md-auto mb-3 mb-md-0 text-center" style="font-size: 14px;">Stock Close Price<br>
-                        <span class="stock-price justify-content-center" style="color: #0000FF; font-size: 20px; font-weight: bold;">--</span>
+    <!-- Container for the Chart and Additional Content -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- First Container - Chart -->
+            <div class="col-md-9">
+                <!-- Container of the Whole Chart -->
+                <div class="container border bg-white rounded" style="margin-left: 70px; height:420px; margin-top: 20px;">
+
+                        <!-- Container of Price Stats -->
+                        <div class="container"> 
+                            <div class="row justify-content-between justify-content-md-start" style="margin-top: 20px; margin-left: 10px;">
+                                <div class="row row-cols-auto justify-content-center justify-content-md-start" style="margin-top: 2px;">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <!-- Valuation Text -->
+                                        <div class="font-weight-bold" style="font-size: 18px;">Valuation Chart</div>
+                                        
+                                        <!-- Dropdown Menu --> 
+                                        <div class="col-auto">
+                                            <div class="dropdown">
+                                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Select Date Range
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                                    <li><a class="dropdown-item" href="#" id="pastMonth">Past 3 Months</a></li>
+                                                    <li><a class="dropdown-item" href="#" id="past6Months">Past 6 Months</a></li>
+                                                    <li><a class="dropdown-item" href="#" id="pastYear">Past Year</a></li>
+                                                    <li><a class="dropdown-item" href="#" id="past3Years">Past 3 Years</a></li>
+                                                    <li><a class="dropdown-item" href="#" id="past5Years">Past 5 Years</a></li>
+                                                    <li><a class="dropdown-item" href="#" id="allTime">All Time</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="col-12 border-top mt-3 mb-3"></div>
+                                <div id="closeP" class="col-12 col-md-auto mb-3 mb-md-0 text-center" style="font-size: 14px; margin-left: 150px;">Stock Close Price<br>
+                                    <span class="stock-price justify-content-center" style="color: #0000FF; font-size: 20px; font-weight: bold;">--</span>
+                                </div>
+                                <div id="minP" class="col-12 col-md-auto text-center" style="font-size: 14px; margin-left: 100px">MAX PER Band<br>
+                                    <span class="stock-price" style="color: #FF0000; font-size: 20px; font-weight: bold;">--</span>
+                                </div>
+                                <div id="aveP" class="col-12 col-md-auto text-center" style="font-size: 14px; margin-left: 100px">AVE PER Band<br>
+                                    <span class="stock-price" style="color: #FF9D00;  font-size:20px; font-weight: bold;">--</span>
+                                </div>
+                                <div id="maxP" class="col-12 col-md-auto text-center" style="font-size: 14px; margin-left: 100px">MIN PER Band<br>
+                                    <span class="stock-price" style="color: #008000; font-size: 20px; font-weight: bold;">--</span>
+                                </div>
+                                <div class="col-12 border-bottom mt-3 mb-5"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="minP" class="col-12 col-md-auto text-center" style="font-size: 14px;">MAX PER Band<br>
-                        <span class="stock-price" style="color: #FF0000; font-size: 20px; font-weight: bold;">--</span>
-                    </div>
-                    <div id="aveP" class="col-12 col-md-auto text-center" style="font-size: 14px;">AVE PER Band<br>
-                        <span class="stock-price" style="color: #FF9D00;  font-size:20px; font-weight: bold;">--</span>
-                    </div>
-                    <div id="maxP" class="col-12 col-md-auto text-center" style="font-size: 14px;">MIN PER Band<br>
-                        <span class="stock-price" style="color: #008000; font-size: 20px; font-weight: bold;">--</span>
+
+
+
+                    <!-- Chart Display -->
+                    <div id="chart-container">
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Chart Display -->
-        <div id="chart-container">
-            <canvas id="myChart"></canvas>
+            <!-- Second Container - Additional Content -->
+            <div class="col-md-2">
+                <table class="table bg-white" style="margin-left: 60px; margin-right: 30px; height:420px; margin-top: 20px; border-radius: 2px; box-shadow: 0 0 0 1px #00000020, 0 0 0 4px #f8f9f9;">
+                        <tbody>
+                            <tr class="table-header" style="background-color:#00000015; height:30px;">
+                                <th scope="row" style="font-size: 15px; text-align: center;">Last Traded Price</th>
+                            </tr>
+                            <tr class="table-value">
+                                <td id="lastTradedP" style="font-size: 20px; text-align: center;"></td>
+                            </tr>
+                            <tr class="table-header" style="background-color:#00000015; height: 30px;">
+                                <th scope="row" style="font-size: 15px; text-align: center;">Strategic Sell Target Price</th>
+                            </tr>
+                            <tr class="table-value">
+                                <td id="sellTarget" style="font-size: 20px; text-align: center;"></td>
+                            </tr>
+                            <tr class="table-header" style="background-color:#00000015; height: 30px;">
+                                <th scope="row" style="font-size: 15px; font-size: 15px; text-align: center;">Tactical Target Price</th>
+                            </tr>
+                            <tr class="table-value">
+                                <td id="tacticalTarget" style="font-size: 20px;text-align: center;"></td>
+                            </tr>
+                            <tr class="table-header" style="background-color:#00000015; height: 30px;">
+                                <th scope="row" style="font-size: 15px; text-align: center;">Strategic Buy Target Price</th>
+                            </tr>
+                            <tr class="table-value">
+                                <td id="buyTarget" style="font-size: 20px; text-align: center;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
         </div>
     </div>
 

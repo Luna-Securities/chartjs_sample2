@@ -12,11 +12,28 @@ $(document).ready(function () {
 
         parsedData = Papa.parse(tabledata, { header: true }).data;
 
-        labels = parsedData.map(row => row.Date);
+        const labels = parsedData.map(row => row.Date);
         const closeData = parsedData.map(row => row.Close);
         const minData = parsedData.map(row => row.Min);
         const aveData = parsedData.map(row => row.Ave);
         const maxData = parsedData.map(row => row.Max);
+
+        // Find the last value in the closeData array
+        var lastTradedP = closeData[closeData.length - 2];
+        var sellTarget= maxData[maxData.length -2]; 
+        var tacticalTarget=aveData[aveData.length -2]; 
+        var buyTarget= minData[minData.length -2];
+        
+        lastTradedP = parseFloat(lastTradedP);
+        sellTarget = parseFloat(sellTarget);
+        tacticalTarget = parseFloat(tacticalTarget);
+        buyTarget = parseFloat(buyTarget);
+                
+        // Update the content of the table cell
+         $("#lastTradedP").text(lastTradedP.toFixed(2));
+         $("#sellTarget").text(sellTarget.toFixed(2));
+         $("#tacticalTarget").text(tacticalTarget.toFixed(2));
+         $("#buyTarget").text(buyTarget.toFixed(2));
 
          
         if (myChart) {
@@ -122,7 +139,8 @@ $(document).ready(function () {
                 }
             }
         });
-    }
+
+        }
 
     fetchAndInitChart();
 
