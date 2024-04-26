@@ -4,19 +4,33 @@ $(document).ready(function () {
     var parsedData;
     var labels;
 
+    // Variables to calculate min, max, and average dynamically
+    var minFactor = 14.234;
+    var maxFactor = 29.667; 
+    var aveFactor = 21.118; 
+
+
     // Fetch CSV data and update chart
     async function fetchAndInitChart() {
-        const url = 'http://127.0.0.1:5500/data.csv';
+        const url = 'http://127.0.0.1:5500/DNL_PER_Test.csv';
         const response = await fetch(url);
         const tabledata = await response.text();
 
         parsedData = Papa.parse(tabledata, { header: true }).data;
 
-        const labels = parsedData.map(row => row.Date);
-        const closeData = parsedData.map(row => row.Close);
-        const minData = parsedData.map(row => row.Min);
-        const aveData = parsedData.map(row => row.Ave);
-        const maxData = parsedData.map(row => row.Max);
+        labels = parsedData.map(row => row.date);
+        const closeData = parsedData.map(row => row.close);
+      
+        // Calculate min, max, and ave data dynamically 
+        const minData = parsedData.map(row => row.ttm * minFactor); 
+        const aveData = parsedData.map(row => row.ttm * aveFactor); 
+        const maxData = parsedData.map(row => row.ttm * maxFactor);
+
+        console.log("Labels:", labels);
+        console.log("Close Data:", closeData);
+        console.log("Min Data:", minData);
+        console.log("Ave Data:", aveData);
+        console.log("Max Data:", maxData);
 
         // Find the last value in the closeData array
         var lastTradedP = closeData[closeData.length - 2];
@@ -90,7 +104,7 @@ $(document).ready(function () {
                         display: false,
                     },
                     tooltip: {
-                        enabled: false
+                        enabled: true
                     }
                 },
                 scales: {
@@ -149,8 +163,29 @@ $('#pastMonth, #past6Months, #pastYear, #past3Years, #past5Years, #allTime').cli
     const timeRange = $(this).attr('id');
     // Filter data based on selected time range
     const filteredData = filterDataByTimeRange(parsedData, timeRange);
+
     updateChart(filteredData);
 });
+
+function updateChartWithNewFactors() {
+    updateFactors();
+    fetchAndInitChart();
+    console.log("minmaxave", minFactor, maxFactor, aveFactor);
+}
+
+function updateFactors() {
+    minFactor = parseFloat(document.getElementById('minFactorInput').value);
+    maxFactor = parseFloat(document.getElementById('maxFactorInput').value);
+    aveFactor = parseFloat(document.getElementById('aveFactorInput').value);
+}
+
+// Event listener to update factors when input values change
+document.getElementById('minFactorInput').addEventListener('change', updateFactors);
+document.getElementById('maxFactorInput').addEventListener('change', updateFactors);
+document.getElementById('aveFactorInput').addEventListener('change', updateFactors);
+
+// Event listener for the update button
+document.getElementById('updateButton').addEventListener('click', updateChartWithNewFactors);
 
 // Function to filter data based on selected time range
 function filterDataByTimeRange(data, timeRange) {
@@ -179,7 +214,7 @@ function filterDataByTimeRange(data, timeRange) {
         }
     
         const filteredData = data.filter(row => {
-            const [day, month, year] = row.Date ? row.Date.split('/') : ['', '', ''];
+            const [day, month, year] = row.date ? row.date.split('/') : ['', '', ''];
             const rowDate = new Date(year, month - 1, day);
             return rowDate >= pastDate && rowDate <= today;
         });
@@ -189,12 +224,12 @@ function filterDataByTimeRange(data, timeRange) {
 
 // Function to update the chart with new data
 function updateChart(data) {
-    labels = data.map(row => row.Date);
-    myChart.data.labels = data.map(row => row.Date);
-    myChart.data.datasets[0].data = data.map(row => row.Close);
-    myChart.data.datasets[1].data = data.map(row => row.Min);
-    myChart.data.datasets[2].data = data.map(row => row.Ave);
-    myChart.data.datasets[3].data = data.map(row => row.Max);
+    labels = data.map(row => row.date);
+    myChart.data.labels = labels; 
+    myChart.data.datasets[0].data = data.map(row => row.close);
+    myChart.data.datasets[1].data = data.map(row => row.ttm * minFactor); 
+    myChart.data.datasets[2].data = data.map(row => row.ttm * aveFactor); 
+    myChart.data.datasets[3].data = data.map(row => row.ttm * maxFactor);
 
     myChart.update();
 }
@@ -234,5 +269,7 @@ document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
         document.getElementById('dropdownMenuButton').textContent = selectedRange;
     });
 });
+
+
 
 });
