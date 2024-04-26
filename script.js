@@ -5,9 +5,34 @@ $(document).ready(function () {
     var labels;
 
     // Variables to calculate min, max, and average dynamically
-    var minFactor = 14.234;
-    var maxFactor = 29.667; 
-    var aveFactor = 21.118; 
+    var minFactor ;
+    var maxFactor; 
+    var aveFactor; 
+
+    // Retrieve the last saved maxFactor and minFactor values from Local Storage
+    var maxFactor = parseFloat(localStorage.getItem('maxFactor')) || 29.667; 
+    var minFactor = parseFloat(localStorage.getItem('minFactor')) || 14.234;
+
+    // Set the initial value of the maxFactor and minFactor input fields
+    document.getElementById('maxFactorInput').value = maxFactor;
+    document.getElementById('minFactorInput').value = minFactor;
+
+    // Event listener to update factors when input values change
+    document.getElementById('minFactorInput').addEventListener('change', function() {
+        minFactor = parseFloat(this.value);
+        // Update Local Storage with the new minFactor value
+        localStorage.setItem('minFactor', minFactor);
+        // Update the chart
+        fetchAndInitChart();
+    });
+
+    document.getElementById('maxFactorInput').addEventListener('change', function() {
+        maxFactor = parseFloat(this.value);
+        // Update Local Storage with the new maxFactor value
+        localStorage.setItem('maxFactor', maxFactor);
+        // Update the chart
+        fetchAndInitChart();
+    });
 
 
     // Fetch CSV data and update chart
@@ -15,6 +40,10 @@ $(document).ready(function () {
         const url = 'http://127.0.0.1:5500/DNL_PER_Test.csv';
         const response = await fetch(url);
         const tabledata = await response.text();
+
+        const harmonicMean = await calculateHarmonicMean();
+        aveFactor = harmonicMean;
+        console.log("ave:", aveFactor);
 
         parsedData = Papa.parse(tabledata, { header: true }).data;
 
@@ -26,11 +55,6 @@ $(document).ready(function () {
         const aveData = parsedData.map(row => row.ttm * aveFactor); 
         const maxData = parsedData.map(row => row.ttm * maxFactor);
 
-        console.log("Labels:", labels);
-        console.log("Close Data:", closeData);
-        console.log("Min Data:", minData);
-        console.log("Ave Data:", aveData);
-        console.log("Max Data:", maxData);
 
         // Find the last value in the closeData array
         var lastTradedP = closeData[closeData.length - 2];
@@ -170,22 +194,44 @@ $('#pastMonth, #past6Months, #pastYear, #past3Years, #past5Years, #allTime').cli
 function updateChartWithNewFactors() {
     updateFactors();
     fetchAndInitChart();
-    console.log("minmaxave", minFactor, maxFactor, aveFactor);
 }
 
 function updateFactors() {
     minFactor = parseFloat(document.getElementById('minFactorInput').value);
     maxFactor = parseFloat(document.getElementById('maxFactorInput').value);
-    aveFactor = parseFloat(document.getElementById('aveFactorInput').value);
 }
 
 // Event listener to update factors when input values change
 document.getElementById('minFactorInput').addEventListener('change', updateFactors);
 document.getElementById('maxFactorInput').addEventListener('change', updateFactors);
-document.getElementById('aveFactorInput').addEventListener('change', updateFactors);
-
 // Event listener for the update button
-document.getElementById('updateButton').addEventListener('click', updateChartWithNewFactors);
+
+// Function to toggle between edit and update modes
+function toggleEditUpdateMode() {
+    const maxInput = document.getElementById('maxFactorInput');
+    const minInput = document.getElementById('minFactorInput');
+    const editButton = document.getElementById('editButton');
+
+    if (maxInput.disabled && minInput.disabled) {
+        // Enable input fields
+        maxInput.disabled = false;
+        minInput.disabled = false;
+        // Change button text to "Update"
+        editButton.textContent = 'Update';
+    } else {
+        // Disable input fields
+        maxInput.disabled = true;
+        minInput.disabled = true;
+        // Change button text to "Edit"
+        editButton.textContent = 'Edit';
+        // Update the chart with new factors
+        updateChartWithNewFactors();
+    }
+}
+
+// Event listener for the edit button
+document.getElementById('editButton').addEventListener('click', toggleEditUpdateMode);
+
 
 // Function to filter data based on selected time range
 function filterDataByTimeRange(data, timeRange) {
@@ -270,6 +316,77 @@ document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
     });
 });
 
+async function fetchPERValues() {
+    const url = 'http://127.0.0.1:5500/DNL_PERvalues.csv';
+    const response = await fetch(url);
+    const perValuesData = await response.text();
+    return perValuesData;
+}
+
+async function processData() {
+    const perValuesData = await fetchPERValues();
+    const parsedData = Papa.parse(perValuesData, { header: true }).data;
+
+    // Map the parsed data to get an array of PER values
+    const perValues = parsedData.map(row => parseFloat(row.PER));
+    const numericPerValues = perValues.filter(value => !isNaN(value));
+
+    // Calculate mean and standard deviation
+    const mean = numericPerValues.reduce((acc, val) => acc + val, 0) / numericPerValues.length;
+    const squaredDiffs = numericPerValues.map(val => Math.pow(val - mean, 2));
+    const variance = squaredDiffs.reduce((acc, val) => acc + val, 0) / numericPerValues.length;
+    const standardDeviation = Math.sqrt(variance);
+
+    // Define the threshold for outliers (e.g., 2 standard deviations)
+    const outlierThreshold = 2 * standardDeviation;
+
+    // Filter out values beyond the threshold
+    const filteredValues = numericPerValues.filter(val => Math.abs(val - mean) <= outlierThreshold);
+
+    // Sort the filtered array to get the top 10 max and min values
+    const sortedFilteredValues = filteredValues.slice().sort((a, b) => a - b);
+
+    // Convert values to strings rounded to 3 decimal places and use a Set to ensure uniqueness
+    const roundedMaxValuesSet = new Set(sortedFilteredValues.map(value => value.toFixed(3)));
+
+    // Convert the Set back to an array
+    const top10MaxValues = Array.from(roundedMaxValuesSet).slice(-15).reverse();
+
+    // Do the same for min values
+    const roundedMinValuesSet = new Set(sortedFilteredValues.map(value => value.toFixed(3)));
+    const top10MinValues = Array.from(roundedMinValuesSet).slice(0, 15);
+
+    // Populate the maximum and minimum values in the HTML table
+    const maxMinTableBody = document.querySelector('.table-max-min');
+    maxMinTableBody.innerHTML = '';
+    for (let i = 0; i < Math.max(top10MaxValues.length, top10MinValues.length); i++) {
+        const row = document.createElement('tr');
+        const maxCell = document.createElement('td');
+        maxCell.textContent = i < top10MaxValues.length ? top10MaxValues[i] : '';
+        row.appendChild(maxCell);
+        const minCell = document.createElement('td');
+        minCell.textContent = i < top10MinValues.length ? top10MinValues[i] : '';
+        row.appendChild(minCell);
+        maxMinTableBody.appendChild(row);
+    }
+}
+
+
+async function calculateHarmonicMean() {
+    const perValuesData = await fetchPERValues();
+    const parsedData = Papa.parse(perValuesData, { header: true }).data;
+
+    // Map the parsed data to get an array of PER values
+    const perValues = parsedData.map(row => parseFloat(row.PER));
+    const numericPerValues = perValues.filter(value => !isNaN(value));
+
+    // Calculate the harmonic mean
+    const harmonicMean = numericPerValues.length / numericPerValues.reduce((acc, val) => acc + (1 / val), 0);
+
+    return harmonicMean;
+}
+
+processData();
 
 
 });

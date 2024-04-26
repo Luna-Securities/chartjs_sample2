@@ -36,10 +36,10 @@
                         D&L Industries, Inc. (DNL)
                     </div>
                 </div>
-                <div class="col-md-3 d-flex justify-content-end align-items-end" style="margin-left: 60px; margin-bottom: 10px;">
+                <div class="col-md-3 d-flex justify-content-end align-items-end" style="margin-left: 78px; margin-bottom: 10px;">
                     <form class="d-flex">
                         <div class="input-group">
-                            <input class="form-control me-1" type="search" placeholder="Type a Stock Symbol here" aria-label="Search" style="background-color: #141825; border-radius: 10px; width: 260px;" >
+                            <input class="form-control me-1" type="search" placeholder="Type a Stock Symbol here" aria-label="Search" style="color: white; background-color: #141825; border-radius: 10px; width: 260px;" >
 
                             </span>
                         </div>
@@ -49,50 +49,45 @@
         
 
         <!-- Container for the Chart and Additional Content -->
-    <div class="row">
-        <div class="col-9 border">
-            <div class="row">
-                    <div class="col-md-3 text-center" style="margin-left: 20px;">
-                        <!-- Input field for minFactor -->
-                        <label for="minFactorInput" style="color: white;">Minimum Value:</label>
-                        <input type="number" id="minFactorInput" value="14.234" step="any" style="border-radius: 5px;">
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <label for="aveFactorInput" style="color: white;">Average Value:</label>
-                        <input type="number" id="aveFactorInput" value="21.118" step="any" style="border-radius: 5px;">
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <!-- Input field for maxFactor -->
-                        <label for="maxFactorInput" style="color: white;">Maximum Value:</label>
-                        <input type="number" id="maxFactorInput" value="29.667" step="any" style="border-radius: 5px;" >
-                    </div>
+    <div class="row justify-content-center">
+        <div class="col-9">
+            <div class="row" style="margin-top: 20px; margin-left: 200px;">
+                <div class="col">
+                    <!-- Input field for maxFactor -->
+                    <label for="maxFactorInput" style="color: white;">Maximum Value:</label>
+                    <input type="number" id="maxFactorInput" value="" style="border-radius: 5px;" disabled>
                 </div>
-                
-                <div class="row">
-                    <div class="col-md-3 text-center " style="margin-left: 480px; margin-top: 20px; margin-bottom: 20px;">
-                        <button id="updateButton" class="btn btn-primary">Update Chart</button>
-                    </div>
+                <div class="col">
+                    <!-- Input field for minFactor -->
+                    <label for="minFactorInput" style="color: white;">Minimum Value:</label>
+                    <input type="number" id="minFactorInput" value="" style="border-radius: 5px;" disabled>
                 </div>
+                <div class="col">
+                    <button id="editButton" class="btn btn-light">Edit</button>
+                </div>
+            </div>
+            
+            
 
-            <div class="row">
-                <div id="closeP" class="col-md-4 text-center me-4" style="font-size: 16px; background-color:#20253D; margin-left: 80px; border-radius:10px; height:100px; width: 295px">Stock Close Price<br>
+            <div class="row justify-content-center" style="margin-top: 30px ; margin-left: 6px;">
+                <div id="closeP" class="col-md-3 text-center me-4 "style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 290px; padding-top:20px;" >Stock Close Price<br>
                 <span class="stock-price justify-content-center" style="color: #0000FF; font-size: 20px; font-weight: bold;">--</span>
                 </div>
-                <div id="minP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 295px">MAX PER Band<br>
+                <div id="minP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 290px; padding-top:20px;">MIN PER Band<br>
                 <span class="stock-price" style="color: #FF0000; font-size: 20px; font-weight: bold;">--</span>
                 </div>
-                <div id="aveP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 295px;">AVE PER Band<br>
+                <div id="aveP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 290px; padding-top:20px;">AVE PER Band<br>
                 <span class="stock-price" style="color: #FF9D00;  font-size:20px; font-weight: bold;">--</span>
                 </div>
-                <div id="maxP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 295px">MIN PER Band<br>
+                <div id="maxP" class="col-md-3 text-center me-4" style="font-size: 16px; background-color:#20253D; border-radius:10px; height:100px; width: 290px; padding-top:20px;">MAX PER Band<br>
                 <span class="stock-price" style="color: #008000; font-size: 20px; font-weight: bold;">--</span>
                 </div>
             </div>
 
 
                 <!-- First Container - Chart -->
-                <div class="col-md-11">
-                    <div class="container" style="background-color:#20253D;margin-left: 70px; height:450px; margin-top: 20px;padding-top: 20px; border-radius: 10px;">
+                <div class="col-md-12">
+                    <div class="container" style="background-color:#20253D; height:450px; margin-top: 20px;padding-top: 20px; border-radius: 10px;">
                         <!-- Container of the Whole Chart -->
                         <div class="container"> 
                             <!-- Container of Price Stats -->
@@ -130,61 +125,43 @@
         </div>
             <!-- Second Container - Additional Content -->
             <div class="col-2">
-                <table class="table bg-white" style="margin-left: 70px; margin-right: 30px; height:100px; margin-top: 15px; border-radius: 10px;background-color: #20253d;">
+                <table class="table" style=" margin-top: 15px; border-radius: 10px; color: white; ">
                     <tbody>
-                        <tr class="table-header" style="background-color:#00000015; height:10px;">
-                            <th scope="row" style="font-size: 14px; text-align: center;">Last Traded Price</th>
+                        <tr class="table-header " style=" background-color: #141825; height:10px;">
+                            <th scope="row" style=" font-size: 14px; text-align: center;">Last Traded Price</th>
                         </tr>
                         <tr class="table-value">
-                            <td id="lastTradedP" style="font-size: 17px; text-align: center; vertical-align: middle;"></td>
+                            <td id="lastTradedP" style="background-color:#20253D; font-size: 17px; text-align: center; vertical-align: middle; "></td>
                         </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
+                        <tr class="table-header" style="background-color: #141825; height: 10px;">
                             <th scope="row" style="font-size: 14px; text-align: center;">Strategic Sell Target Price</th>
                         </tr>
                         <tr class="table-value">
-                            <td id="sellTarget" style="font-size: 17px; text-align: center; vertical-align: middle;"></td>
+                            <td id="sellTarget" style="background-color:#20253D; font-size: 17px; text-align: center; vertical-align: middle;"></td>
                         </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
+                        <tr class="table-header" style="background-color: #141825; height: 10px;">
                             <th scope="row" style="font-size: 14px; font-size: 15px; text-align: center;">Tactical Target Price</th>
                         </tr>
                         <tr class="table-value">
-                            <td id="tacticalTarget" style="font-size: 17px;text-align: center;vertical-align: middle;"></td>
+                            <td id="tacticalTarget" style="background-color:#20253D; font-size: 17px;text-align: center;vertical-align: middle;"></td>
                         </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
+                        <tr class="table-header" style="background-color: #141825; height: 10px;">
                             <th scope="row" style="font-size: 14px; text-align: center;">Strategic Buy Target Price</th>
                         </tr>
                         <tr class="table-value">
-                            <td id="buyTarget" style="font-size: 17px; text-align: center;vertical-align: middle;"></td>
+                            <td id="buyTarget" style="background-color:#20253D; font-size: 17px; text-align: center;vertical-align: middle;"></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <table class="table bg-white" style="margin-left: 70px; margin-right: 30px; height:100px; margin-top: 15px; border-radius: 10px;background-color: #20253d;">
-                    <tbody>
-                        <tr class="table-header" style="background-color:#00000015; height:10px;">
-                            <th scope="row" style="font-size: 14px; text-align: center;">Last Traded Price</th>
+                <table class="table" style="color:white;  margin-top: 15px; border-radius: 10px; background-color: #20253d; height: 300px; overflow-y: auto; display: block;">
+                    <thead>
+                        <tr class="table-header" style="background-color: #141825; height: 10px;">
+                            <th style="font-size: 14px; text-align: center;">Maximum Values</th>
+                            <th style="font-size: 14px; text-align: center;">Minimum Values</th>
                         </tr>
-                        <tr class="table-value">
-                            <td id="lastTradedP" style="font-size: 17px; text-align: center; vertical-align: middle;"></td>
-                        </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
-                            <th scope="row" style="font-size: 14px; text-align: center;">Strategic Sell Target Price</th>
-                        </tr>
-                        <tr class="table-value">
-                            <td id="sellTarget" style="font-size: 17px; text-align: center; vertical-align: middle;"></td>
-                        </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
-                            <th scope="row" style="font-size: 14px; font-size: 15px; text-align: center;">Tactical Target Price</th>
-                        </tr>
-                        <tr class="table-value">
-                            <td id="tacticalTarget" style="font-size: 17px;text-align: center;vertical-align: middle;"></td>
-                        </tr>
-                        <tr class="table-header" style="background-color:#00000015; height: 10px;">
-                            <th scope="row" style="font-size: 14px; text-align: center;">Strategic Buy Target Price</th>
-                        </tr>
-                        <tr class="table-value">
-                            <td id="buyTarget" style="font-size: 17px; text-align: center;vertical-align: middle;"></td>
-                        </tr>
+                    </thead>
+                    <tbody class="table-max-min " style="text-align: center;"> 
                     </tbody>
                 </table>
             </div>
