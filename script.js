@@ -10,8 +10,8 @@ $(document).ready(function () {
     var aveFactor; 
 
     // Retrieve the last saved maxFactor and minFactor values from Local Storage
-    var maxFactor = parseFloat(localStorage.getItem('maxFactor')) || 29.667; 
-    var minFactor = parseFloat(localStorage.getItem('minFactor')) || 14.234;
+    var maxFactor = parseFloat(localStorage.getItem('maxFactor')) || 28.810; 
+    var minFactor = parseFloat(localStorage.getItem('minFactor')) || 14.758;
 
     // Set the initial value of the maxFactor and minFactor input fields
     document.getElementById('maxFactorInput').value = maxFactor;
@@ -337,16 +337,15 @@ async function processData() {
     const variance = squaredDiffs.reduce((acc, val) => acc + val, 0) / numericPerValues.length;
     const standardDeviation = Math.sqrt(variance);
 
-    // Define the threshold for outliers (e.g., 2 standard deviations)
     const outlierThreshold = 2 * standardDeviation;
 
     // Filter out values beyond the threshold
     const filteredValues = numericPerValues.filter(val => Math.abs(val - mean) <= outlierThreshold);
 
-    // Sort the filtered array to get the top 10 max and min values
+    // Sort the filtered array to get the top 15 max and min values
     const sortedFilteredValues = filteredValues.slice().sort((a, b) => a - b);
 
-    // Convert values to strings rounded to 3 decimal places and use a Set to ensure uniqueness
+    // Filter unique values
     const roundedMaxValuesSet = new Set(sortedFilteredValues.map(value => value.toFixed(3)));
 
     // Convert the Set back to an array
